@@ -4,10 +4,12 @@ import TaskAddFinishButtons from "./TaskAddFinishButtons";
 import NewOperation from "./NewOperation";
 import TaskDeleteButton from "./TaskDeleteButton";
 import Operation from "./Operation";
+import {closeTask} from "../api/tasks";
 
 const Task = ({task, onRemoveTask}) => {
     const [operations, setOperations] = useState([]);
     const [addOperationButton, setAddOperationButton] = useState(false);
+    const [status, setStatus] = useState(task.status)
 
     const getAllOperations = operations => setOperations(operations);
 
@@ -24,6 +26,11 @@ const Task = ({task, onRemoveTask}) => {
             onRemoveTask(task.id)
         }
     }
+
+    const finishTask = () => {
+        setStatus("closed")
+        closeTask(task.title, task.description, task.id)
+    }
     
 
     return (
@@ -34,7 +41,8 @@ const Task = ({task, onRemoveTask}) => {
                 <h6 className="card-subtitle text-muted">{task.description}</h6>
             </div>
 
-            {task.status === "open" && <TaskAddFinishButtons toggleAddButton={toggleAddButton} />}
+            {status === "open" && <TaskAddFinishButtons 
+            toggleAddButton={toggleAddButton} finishTask={finishTask}/>}
             {operations.length === 0 && <TaskDeleteButton onDelete={deleteTask}/>}
             </div>
 

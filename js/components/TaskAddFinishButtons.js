@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const TaskAddFinishButtons = ({ toggleAddButton }) => {
+const TaskAddFinishButtons = ({ toggleAddButton, finishTask }) => {
     
     return(
         <div>
@@ -10,7 +10,7 @@ const TaskAddFinishButtons = ({ toggleAddButton }) => {
             <i className="fas fa-plus-circle ml-1"></i>
             </button>
 
-            <button className="btn btn-dark btn-sm">
+            <button onClick={finishTask} className="btn btn-dark btn-sm">
             Finish
             <i className="fas fa-archive ml-1"></i>
             </button>
