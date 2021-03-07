@@ -52,6 +52,33 @@ const addTask = async (title, description, successCallback) => {
   }
 };
 
+const AddOperationToTask = async (id, description, successCallback) => {
+  try {
+    const response = await fetch(`${API_URL}/tasks/${id}/operations`, {
+      headers: {
+        "Authorization": API_KEY,
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify({
+        description: description,
+        timeSpent: 0
+      })
+    })
+
+    const data = await response.json()
+
+    if (data.error || typeof successCallback !== 'function') {
+      throw new Error('Błąd!');
+    }
+
+    successCallback(data.data);
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 
 const deleteTask = async (id) => {
   try {
@@ -84,17 +111,9 @@ const closeTask = async (title, description, id) => {
       body: JSON.stringify(task)
     })
 
-    // const data = await response.json()
-
-    // if (data.error || typeof successCallback !== 'function') {
-    //   throw new Error('Błąd!');
-    // }
-
-    // successCallback(data.data);
-
   } catch (err) {
     console.log(err);
   }
 }
   
-export {getTasks, addTask, deleteTask, closeTask};
+export {getTasks, addTask, deleteTask, closeTask, AddOperationToTask};

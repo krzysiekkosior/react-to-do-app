@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 
-const NewOperation = () => {
-    
+const NewOperation = ({onAdd}) => {
+    const [description, setDescription] = useState("")
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (description) {
+            onAdd(description);
+            setDescription("");
+        }
+    }
 
     return (
         <div className="card-body">
-        <form>
+        <form onSubmit={handleSubmit}>
             <div className="input-group">
             <input type="text"
                     className="form-control"
-                    placeholder="Operation description"/>
+                    placeholder="Operation description"
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}/>
 
             <div className="input-group-append">
                 <button className="btn btn-info">

@@ -4,7 +4,7 @@ import TaskAddFinishButtons from "./TaskAddFinishButtons";
 import NewOperation from "./NewOperation";
 import TaskDeleteButton from "./TaskDeleteButton";
 import Operation from "./Operation";
-import {closeTask} from "../api/tasks";
+import {closeTask, AddOperationToTask} from "../api/tasks";
 
 const Task = ({task, onRemoveTask}) => {
     const [operations, setOperations] = useState([]);
@@ -31,6 +31,15 @@ const Task = ({task, onRemoveTask}) => {
         setStatus("closed")
         closeTask(task.title, task.description, task.id)
     }
+
+    const addOperationToState = (operation) => {
+        setOperations(prev => [...prev, operation])
+    }
+
+    const addOperation = (description) => {
+        toggleAddButton();
+        AddOperationToTask(task.id, description, addOperationToState)
+    }
     
 
     return (
@@ -46,7 +55,7 @@ const Task = ({task, onRemoveTask}) => {
             {operations.length === 0 && <TaskDeleteButton onDelete={deleteTask}/>}
             </div>
 
-            {addOperationButton && <NewOperation />}
+            {addOperationButton && <NewOperation onAdd={addOperation}/>}
 
             <ul className="list-group list-group-flush">
             {operations && 
