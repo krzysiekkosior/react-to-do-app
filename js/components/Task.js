@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {getOperations} from "../api/operations";
+import {getOperations, deleteOperation} from "../api/operations";
 import TaskAddFinishButtons from "./TaskAddFinishButtons";
 import NewOperation from "./NewOperation";
 import TaskDeleteButton from "./TaskDeleteButton";
@@ -42,6 +42,7 @@ const Task = ({task, onRemoveTask}) => {
     }
 
     const removeOperation = (id) => {
+        deleteOperation(id);
         setOperations(prev => {
             let filteredOperations = prev.filter(operation => operation.id !== id);
             return filteredOperations;
@@ -68,7 +69,7 @@ const Task = ({task, onRemoveTask}) => {
             {operations && 
                 operations.map((operation) => {
                     return <Operation key={operation.id} operation={operation}
-                     onRemoveOperation={removeOperation}/>
+                     onRemoveOperation={removeOperation} taskStatus={status}/>
                 })
             }
             </ul>

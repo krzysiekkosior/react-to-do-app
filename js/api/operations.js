@@ -21,7 +21,7 @@ const getOperations = async (id, successCallback) => {
     }
   };
 
-  
+
 const deleteOperation = async (id) => {
   try {
     const response = await fetch(`${API_URL}/operations/${id}`, {
@@ -36,4 +36,23 @@ const deleteOperation = async (id) => {
   }
 }
 
-export {getOperations, deleteOperation};
+const addTimeToOperation = async (id, description, time) => {
+  try {
+    const response = await fetch(`${API_URL}/operations/${id}`, {
+      headers: {
+        "Authorization": API_KEY,
+        "Content-Type": "application/json"
+      },
+      method: "PUT",
+      body: JSON.stringify({
+        description: description,
+        timeSpent: time
+      })
+    })
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export {getOperations, deleteOperation, addTimeToOperation};

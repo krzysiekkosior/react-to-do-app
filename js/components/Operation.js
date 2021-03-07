@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import OperationButtons from "./OperationButtons";
 import AddOperationTime from "./AddOperationTime";
-import {deleteOperation} from "../api/operations";
+import {addTimeToOperation} from "../api/operations";
 
-const Operation = ({operation, onRemoveOperation}) => {
+const Operation = ({operation, onRemoveOperation, taskStatus}) => {
     const [addTimeFormVisibility, setAddTimeFormVisibility] = useState(false)
+    const [timeSpent, setTimeSpent] = useState(operation.timeSpent)
 
     const ChangeAddTimeFormVisibility = () => {
         setAddTimeFormVisibility(prev => !prev)
@@ -21,21 +22,30 @@ const Operation = ({operation, onRemoveOperation}) => {
     }
 
     const removeOperation = () => {
-        deleteOperation(operation.id);
         onRemoveOperation(operation.id);
+    }
+
+    const addTime = (time) => {
+        setTimeSpent(prev => prev + time);
+        let totalTime = timeSpent + time;
+        addTimeToOperation(operation.id, operation.description, totalTime);
+        ChangeAddTimeFormVisibility();
     }
 
     return (
         <li className="list-group-item d-flex justify-content-between align-items-center">
             <div>{operation.description}
-            {operation.timeSpent > 0 && 
+            {timeSpent > 0 && 
             <span className="badge badge-success badge-pill ml-2">
-                {formatTime(operation.timeSpent)}
+                {formatTime(timeSpent)}
             </span>
             }
             </div>
-            {addTimeFormVisibility ? <AddOperationTime onClose={ChangeAddTimeFormVisibility}/> : 
-            <OperationButtons onAdd={ChangeAddTimeFormVisibility} onDelete={removeOperation}/>}            
+            {addTimeFormVisibility ? <AddOperationTime onClose={ChangeAddTimeFormVisibility}
+            onAdd={addTime}/> : 
+            
+            <OperationButtons onAdd={ChangeAddTimeFormVisibility} status={taskStatus}
+            onDelete={removeOperation}/>}            
         </li>
     )
 }

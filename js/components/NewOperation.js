@@ -5,7 +5,7 @@ const NewOperation = ({onAdd}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (description) {
+        if (description.length > 0) {
             onAdd(description);
             setDescription("");
         }
