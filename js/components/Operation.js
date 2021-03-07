@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import OperationButtons from "./OperationButtons";
 import AddOperationTime from "./AddOperationTime";
+import {deleteOperation} from "../api/operations";
 
-const Operation = ({operation}) => {
+const Operation = ({operation, onRemoveOperation}) => {
     const [addTimeFormVisibility, setAddTimeFormVisibility] = useState(false)
 
     const ChangeAddTimeFormVisibility = () => {
@@ -15,8 +16,13 @@ const Operation = ({operation}) => {
         if (hours > 0) {
             return hours + "h " + minutes + "m";
         } else {
-            return minutes + "m"
+            return minutes + "m";
         }
+    }
+
+    const removeOperation = () => {
+        deleteOperation(operation.id);
+        onRemoveOperation(operation.id);
     }
 
     return (
@@ -29,7 +35,7 @@ const Operation = ({operation}) => {
             }
             </div>
             {addTimeFormVisibility ? <AddOperationTime onClose={ChangeAddTimeFormVisibility}/> : 
-            <OperationButtons onAdd={ChangeAddTimeFormVisibility}/>}            
+            <OperationButtons onAdd={ChangeAddTimeFormVisibility} onDelete={removeOperation}/>}            
         </li>
     )
 }

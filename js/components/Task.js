@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import getOperations from "../api/operations";
+import {getOperations} from "../api/operations";
 import TaskAddFinishButtons from "./TaskAddFinishButtons";
 import NewOperation from "./NewOperation";
 import TaskDeleteButton from "./TaskDeleteButton";
@@ -40,6 +40,13 @@ const Task = ({task, onRemoveTask}) => {
         toggleAddButton();
         AddOperationToTask(task.id, description, addOperationToState)
     }
+
+    const removeOperation = (id) => {
+        setOperations(prev => {
+            let filteredOperations = prev.filter(operation => operation.id !== id);
+            return filteredOperations;
+        })
+    }
     
 
     return (
@@ -60,7 +67,8 @@ const Task = ({task, onRemoveTask}) => {
             <ul className="list-group list-group-flush">
             {operations && 
                 operations.map((operation) => {
-                    return <Operation key={operation.id} operation={operation} />
+                    return <Operation key={operation.id} operation={operation}
+                     onRemoveOperation={removeOperation}/>
                 })
             }
             </ul>

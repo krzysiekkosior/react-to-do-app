@@ -21,4 +21,19 @@ const getOperations = async (id, successCallback) => {
     }
   };
 
-export default getOperations;
+  
+const deleteOperation = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/operations/${id}`, {
+      headers: {
+        Authorization: API_KEY
+      },
+      method: "DELETE"
+    })
+
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export {getOperations, deleteOperation};
